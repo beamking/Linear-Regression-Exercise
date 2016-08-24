@@ -1,0 +1,25 @@
+states.data <- readRDS("dataSets/states.rds")
+states.info <- data.frame(attributes(states.data)[c("names","var.labels")])
+
+## Exercise: least squares regression
+sts.eng.met <- subset(states.data, select = c("energy","metro"))
+summary(sts.eng.met)
+cor(sts.eng.met)
+plot(sts.eng.met)
+eng.mod <- lm(energy ~ metro, data = states.data)
+summary(eng.mod)
+plot(eng.mod)
+
+eng.mod2 <- (lm(energy ~ metro + toxic + green, data = states.data))
+summary(eng.mod2)
+class(eng.mod2)
+
+## Exercise: interactions and factors
+eng.mod3 <- lm(energy ~ metro + toxic*green, data = states.data)
+summary(eng.mod3)
+
+states.data$region <- factor(states.data$region)
+eng.mod3 <- lm(energy ~ metro + toxic*green + region, data = states.data)
+summary(eng.mod3)
+
+# There is a little significance in the South region
